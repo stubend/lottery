@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        html{
+            width: 100%;
+            height:100%;
+        }
+
+        body{
+            background: url(images/bg.jpg) no-repeat 50% 50% / 100% 100%;
+            width: 100%;
+            height:100%;
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            background-color: #c3c3c3;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        .wrapper{
+            position: relative;
+            width: 100%;
+            height:calc(100% - 150px);
+            transform-style: preserve-3d;
+            perspective: 1500px;
+            transition-timing-function: linear;
+            /*overflow: hidden;*/
+        }
+
+        .ball{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition-timing-function: linear;
+        }
+
+        .ball.lottery{
+            /*transition-duration: 66ms;*/
+            /*transition-timing-function: linear;*/
+        }
+
+        .point{
+            position: absolute;
+            left: 50%;
+            top:50%;
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%,-50%);
+            /*transition: all 1s 200ms;*/
+            backface-visibility: visible;
+        }
+
+        .point i {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: 50% 50%;
+            transition-delay: 500ms;
+            transition-duration: 1s;
+            transform: translate(-50%, -50%);
+        }
+
+        .point.winner i{
+            width: 300%;
+            height: 300%;
+        }
+
+        .lottery-actions{
+            position: relative;
+            z-index: 22;
+            text-align: center;
+        }
+
+        .lottery-actions button{
+            display: none;
+        }
+
+        .lottery-items:empty{
+            display: none;
+        }
+
+        .btn-start,
+        .btn-continue,
+        .btn-stop{
+            display: none;
+            margin: 0 auto;
+            width: 273px;/*390*0.7*/
+            height: 98px;/*140*0.7*/
+            cursor: pointer;
+            background: url("images/start.png") no-repeat 50% 50% / 100% 100%;
+        }
+
+        .btn-stop{
+            background-image: url("images/stop.png");
+        }
+
+        .winners{
+            width: 100%;
+            height: 100%;
+            /*transform: scale(0.65);*/
+        }
+
+        .winners .item{
+            position: relative;
+        }
+
+        .winners .name{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            margin-top: 5px;
+            text-align: center;
+            color: #faf6cc;
+            font-size: 20px;
+            line-height: 1.5;
+            letter-spacing: 5px;
+        }
+
+        .winners .box{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1276px;
+            height: 624px;
+            box-sizing: border-box;
+            transform: translate(-50%, -50%);
+            transform-origin: 50% 100%;
+        }
+
+        .winners .box.special{
+            text-align: center;
+            font-size: 0;
+            line-height: 0;
+            background: url("images/wbg.png") no-repeat 50% 0 / 100% 100%  !important;
+        }
+
+        .winners .special .item{
+            /*float: left;*/
+            display: inline-block;
+            vertical-align: top;
+            box-shadow: 0 0 5px 5px rgba(237,206,82,0.8), inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .winners .box.w-10{
+            padding: 210px 220px 0 200px;
+        }
+
+        .winners .box.w-10 .item{
+            width: 120px;
+            height: 120px;
+            margin: 0 20px 50px;
+        }
+
+        .winners .box.w-5{
+            padding: 260px 20px 0 0;
+        }
+
+        .winners .box.w-5 .item{
+            width: 140px;
+            height: 140px;
+            margin: 0 20px;
+        }
+
+        .winners .box.w-4{
+            padding: 250px 20px 0;
+        }
+
+        .winners .box.w-4 .item{
+            width: 150px;
+            height: 200px;
+            margin: 0 30px;
+        }
+
+        .winners .box.w-2{
+            padding: 250px 20px 0;
+        }
+
+        .winners .box.w-2 .item{
+            width: 150px;
+            height: 200px;
+            margin: 0 30px;
+        }
+
+        .winners .box.w-1{
+            width:1113px;
+            height: 1029px;
+            padding: 255px 400px 470px 410px;
+            background: url("images/b.png") no-repeat 50% 0;
+            transform: translate(-50%, -50%) translateY(-100px) scale(0.65);
+        }
+
+        .winners .box.w-1 .item{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border-radius: 50%;
+        }
+
+        .winners .box.w-1 .item .name{
+            font-size: 30px;
+            margin-top: 70px;
+        }
+
+        .lottery-info{
+            position: absolute;
+            left: 50%;
+            margin-left: -450px;
+            top: 15px;
+            width: 200px;
+            height: 70px;
+            z-index: 2;
+        }
+
+        .lottery-items{
+            display: none;
+            width: 200px;
+            height: 70px;
+            padding-left: 30px;
+            background: url("images/drop.png") no-repeat 50% 0 / 100% 100%;
+            border: none;
+            outline: none;
+            font-size: 20px;
+            color: #faf6cc;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+        }
+
+        .lottery-info:hover .lottery-items{
+            display: block;
+        }
+
+        option{
+            color: #948408;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper" id="wrapper">
+    <div class="ball" id="box"></div>
+    <div class="winners"></div>
+</div>
+<div class="lottery-actions">
+    <div class="lottery-info">
+        <div class="total"></div>
+        <div class="set">
+            <select class="lottery-items"></select>
+        </div>
+    </div>
+    <a id="begin-lottery" class="btn-start"></a>
+    <a id="continue-lottery" class="btn-continue"></a>
+    <a id="stop-lottery" class="btn-stop"></a>
+</div>
+
+
+
+<script type="text/template" id="tpl-winners">
+    <div class="box w-<%= data.length %> <%= (/[特一]/.test(item) || '其他' == item) ? '' : ' special' %>">
+        <% _.each(data,function(n){ %>
+        <div class="item" style="background: url('<%= n.image %>') no-repeat 50% 50% / cover">
+            <div class="name"><%= n.name %></div>
+        </div>
+        <% });%>
+    </div>
+</script>
+
+<audio src="sound.mp3" id="sound" loop></audio>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="data/data.js"></script>
+<script src="js/lottery.js"></script>
+</body>
+</html>
